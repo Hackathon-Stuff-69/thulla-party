@@ -73,9 +73,12 @@ const App: React.FC = () => {
   console.log(state);
 
   useEffect(() => {
-    // if (state.user?.uid)
-    // axios()
-  }, [state.user]);
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setState((prevState) => ({ ...prevState, user }));
+    });
+
+    return unsubscribe;
+  }, [auth]);
 
   return (
     <Router>
