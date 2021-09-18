@@ -28,6 +28,8 @@ const drawCards = async (deckId: string, count: number) => {
     });
 };
 
+//testing
+
 const addToPiles = async (deckId: string, pileId: string, cardArray: Array<any>) => {
   const cardStrArray = cardArray.map((value, index) => value.code);
   const cardString = cardStrArray.join(',');
