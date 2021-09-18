@@ -52,10 +52,12 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
     >
       {state.user && (
         <>
-          <form className='flex flex-col items-center justify-center mx-auto mt-6 w-64 h-24 bg-white rounded shadow-lg space-y-2'>
-            {homeState.error && <p className='m-0 text-red-500'>{homeState.error}</p>}
+          <form className='flex flex-col items-center justify-center mx-auto mt-6 w-64 p-4 bg-white rounded shadow-lg space-y-2'>
+            {homeState.error && <p className='m-0 text-red-500 text-center'>{homeState.error}</p>}
             <input
-              className={`${homeState.error ? 'border border-solid border-red-500' : ''} focus:outline-none p-2`}
+              className={`${
+                homeState.error ? 'border border-solid border-red-500' : ''
+              } focus:outline-none p-2 rounded`}
               placeholder='Enter Room Name'
               onChange={(e) => setHomeState((prevState) => ({ ...prevState, roomName: e.target.value }))}
               required
