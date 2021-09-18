@@ -1,5 +1,5 @@
 // Initialize Cloud Firestore through Firebase
-import { addDoc, updateDoc, arrayUnion, collection, doc, setDoc } from 'firebase/firestore';
+import { addDoc, updateDoc, arrayUnion, collection, doc, setDoc, getDoc } from 'firebase/firestore';
 import { db, RoomItem } from '../constants';
 // const firebaseApp = initializeApp(firebaseConfig);
 
@@ -37,16 +37,38 @@ const addPlayer = async (roomName: string, playerName: any) => {
   }
 };
 
-const addData = async (roomName: string, data: any) => {
+const getRoomById = async (roomName: string) => {
   try {
-    const docRef: any = await setDoc(doc(db, 'rooms', roomName), {
-      ...data,
-    });
+    const docRef: any = await doc(db, 'rooms', roomName);
+    const docSnap = await getDoc(docRef);
 
+    if (docSnap.exists()) {
+      console.log('Document data:', docSnap.data());
+    } else {
+      // doc.data() will be undefined in this case
+      console.log('No such document!');
+    }
+    return docSnap.data();
+  } catch (error) {
+    console.error(error.error.message);
+  }
+};
+
+const addData = async (roomName: string, status: string) => {
+  try {
+    const docRef: any = await doc(db, 'rooms', roomName);
+    await setDoc(
+      docRef,
+      {
+        game_status: status,
+      },
+      { merge: true },
+    );
+    return docRef;
     console.log('Update Successful!!!');
   } catch (e) {
     console.error('Error adding document: ', e);
   }
 };
 
-export { addRoom, addPlayer, addData };
+export { addRoom, addPlayer, addData, getRoomById };
