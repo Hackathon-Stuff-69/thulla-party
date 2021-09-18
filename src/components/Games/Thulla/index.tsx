@@ -370,12 +370,20 @@ const Thulla = (porps) => {
           backgroundPosition: 'center',
         }}
       >
-        <div className='flex flex-col w-3/4 absolute justify-self-center self-center'>
-          <div className='flex w-96 h-96 flex-wrap justify-center items-center'>
-            {tableCards.map((card) => (
+        <div className='flex flex-col w-3/4 absolute h-full justify-center items-center'>
+          <div className='w-96 h-96 flex items-center justify-center overflow-hidden'>
+            {tableCards.map((card, index) => (
               <Card
                 key={card.code}
-                styles={{ height: 80, width: 58 }}
+                styles={{
+                  height: 150,
+                  width: 108,
+                  marginTop: Math.floor(Math.random() * 230),
+                  marginLeft: Math.floor(Math.random() * 230),
+                  marginRight: Math.floor(Math.random() * 230),
+                  zIndex: index,
+                  position: 'absolute',
+                }}
                 onClick={() => {
                   return;
                 }}
@@ -386,7 +394,7 @@ const Thulla = (porps) => {
               />
             ))}
           </div>
-          <div className='flex bottom-0 justify-evenly'>
+          <div className='flex bottom-0 w-full'>
             {playerCards.map((card) => (
               <Card
                 styles={{ height: 216, width: 155 }}
