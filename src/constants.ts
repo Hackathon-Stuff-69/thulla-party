@@ -1,5 +1,4 @@
-import { User } from 'firebase/auth';
-
+import { getAuth, GoogleAuthProvider, User } from 'firebase/auth';
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
@@ -17,8 +16,9 @@ const DAILY_API_KEY = process.env.REACT_APP_DAILY_API_KEY;
 export const DAILY_API_HEADERS = { headers: { Authorization: `Bearer ${DAILY_API_KEY}` } };
 
 export const app = initializeApp(firebaseConfig);
-
 export const db = getFirestore();
+export const provider = new GoogleAuthProvider();
+export const auth = getAuth();
 
 export interface Players {
   name: string;
@@ -39,6 +39,10 @@ export type RoomItem = {
   players?: string[];
   host: string;
   game_status: string;
+};
+
+export type UserType = {
+  user: User | null;
 };
 
 export type MainState = {

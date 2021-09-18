@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -9,9 +10,8 @@ import axios from 'axios';
 // });
 
 import { initializeRoom } from '../Game Logic/getawayFuncs';
-
+import Header from './Header';
 import { DAILY_API_HEADERS, MainState, RoomItem } from './../constants';
-import { useState } from 'react';
 
 type HomeState = {
   show: boolean;
@@ -37,57 +37,64 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
         })
         .catch((error) => {
           console.error(error);
-          setHomeState((prevState) => ({ ...prevState, error: 'A room with this name already exists' }));
+          setHomeState((prevState) => ({ ...prevState, error: 'Error creating room' }));
         });
   };
 
   return (
-    <div
-      className='flex flex-col justify-center space-y-6 h-full w-screen'
-      style={{
-        background: `url('static/cover.png')`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: '100%',
-      }}
-    >
-      {state.user && (
-        <>
-          <form className='flex flex-col items-center justify-center mx-auto mt-6 w-64 p-4 bg-white rounded shadow-lg space-y-2'>
-            {homeState.error && <p className='m-0 text-red-500 text-center'>{homeState.error}</p>}
-            <input
-              className={`${
-                homeState.error ? 'border border-solid border-red-500' : ''
-              } focus:outline-none p-2 rounded`}
-              placeholder='Enter Room Name'
-              onChange={(e) => setHomeState((prevState) => ({ ...prevState, roomName: e.target.value }))}
-              required
-            />
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                setHomeState((prevState) => ({ ...prevState, error: null }));
-                createRoom();
-              }}
-              type='submit'
-            >
-              Add Room
-            </button>
-          </form>
+    <>
+      <Header user={state.user} />
+      <div
+        className={`flex flex-col justify-center space-y-6 w-screen ${state.user ? 'h-full' : 'h-screen'}`}
+        style={{
+          background: `url('static/cover.png')`,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '100%',
+        }}
+      >
+        {state.user ? (
+          <>
+            <form className='flex flex-col items-center justify-center mx-auto mt-6 w-64 p-4 bg-white rounded shadow-lg space-y-2'>
+              {homeState.error && <p className='m-0 text-red-500 text-center'>{homeState.error}</p>}
+              <input
+                className={`${
+                  homeState.error ? 'border border-solid border-red-500' : ''
+                } focus:outline-none p-2 rounded`}
+                placeholder='Enter Room Name'
+                onChange={(e) => setHomeState((prevState) => ({ ...prevState, roomName: e.target.value }))}
+                required
+              />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  setHomeState((prevState) => ({ ...prevState, error: null }));
+                  createRoom();
+                }}
+                type='submit'
+              >
+                Add Room
+              </button>
+            </form>
 
-          <div className='flex mx-auto max-w-5xl'>
-            <div className='flex flex-wrap justify-center'>
-              {state.rooms.map((room) => (
-                <Link className='p-4' key={room.name} to={`/room/${room.name}`}>
-                  <div className='flex items-center justify-center bg-white w-64 h-64 rounded-lg shadow-lg'>
-                    {room.name}
-                  </div>
-                </Link>
-              ))}
+            <div className='flex mx-auto max-w-5xl'>
+              <div className='flex flex-wrap justify-center'>
+                {state.rooms.map((room) => (
+                  <Link className='p-4' key={room.name} to={`/room/${room.name}`}>
+                    <div className='flex items-center justify-center bg-white w-64 h-64 rounded-lg shadow-lg'>
+                      {room.name}
+                    </div>
+                  </Link>
+                ))}
+              </div>
             </div>
+          </>
+        ) : (
+          <div className='flex items-center justify-center mx-auto w-64 p-4 bg-white rounded shadow-lg'>
+            Login to Bhagao Boriyat
           </div>
-        </>
-      )}
-    </div>
+        )}
+      </div>
+    </>
   );
 };
 
