@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, Redirect } from 'react-router-dom';
 import axios from 'axios';
+import Thulla from './Games/Thulla';
 import { User } from 'firebase/auth';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
 import { addPlayer } from '../Services/coreService';
@@ -91,7 +92,7 @@ const Room = ({ user }: { user: User | null }) => {
           <div ref={callWrapperRef} className='w-1/4' />
           <div className='flex items-center justify-center w-3/4'>
             {state.hasStarted ? (
-              <></>
+              <Thulla />
             ) : state.canStart ? (
               <button onClick={startHandler}>Start Game!</button>
             ) : (
@@ -100,7 +101,7 @@ const Room = ({ user }: { user: User | null }) => {
           </div>
         </>
       ) : (
-        <div className='flex items-center justify-center w-full'>Loading Room</div>
+        <div className='flex items-center justify-center w-full text-3xl'>Loading Room...</div>
       )}
     </div>
   );

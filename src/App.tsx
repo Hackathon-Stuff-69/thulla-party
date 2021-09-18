@@ -82,22 +82,28 @@ const App: React.FC = () => {
           <span className='flex items-center text-white space-x-4'>
             <img alt='Placeholder' className='block rounded-full w-8 h-8' src={state.user.photoURL} />
             <p className='m-0 font-bold'>{state.user.displayName}</p>
-            <button className='m-0 px-2 rounded border border-solid border-white' onClick={() => signOut(auth)}>
+            <button
+              className='m-0 bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded'
+              onClick={() => signOut(auth)}
+            >
               Logout
             </button>
           </span>
         ) : (
-          <button className='text-white' onClick={() => googleSignIn(auth, provider)}>
+          <button
+            className='bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded'
+            onClick={() => googleSignIn(auth, provider)}
+          >
             Login with Google
           </button>
         )}
       </nav>
 
       <Switch>
-        <Route path='/room/:roomName'>
+        <Route exact path='/room/:roomName'>
           <Room user={state.user} />
         </Route>
-        <Route path='/'>
+        <Route exact path='/'>
           <Home
             state={state}
             setState={(room: RoomItem) =>
