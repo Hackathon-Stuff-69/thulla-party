@@ -5,14 +5,19 @@ import { User } from 'firebase/auth';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
 import { addPlayer } from '../Services/coreService';
 
-import { DAILY_API_HEADERS, RoomItem } from './../constants';
+import { DAILY_API_HEADERS, RoomItem, db } from './../constants';
+import { startGame } from '../Game Logic/getawayFuncs';
+
+import { doc, onSnapshot } from 'firebase/firestore';
 
 type State = {
   room?: RoomItem;
+  canStart: boolean;
+  hasStarted: boolean;
 };
 
 const Room = ({ user }: { user: User | null }) => {
-  const [state, setState] = useState<State>({ room: null });
+  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: false });
   const callWrapperRef = useRef(null);
   const callFrame = useRef<DailyCall>();
   const { roomName } = useParams<{ roomName: string }>();
@@ -47,6 +52,26 @@ const Room = ({ user }: { user: User | null }) => {
     // eslint-disable-next-line
   }, [state?.room?.name]);
 
+  // eslint-disable-next-line
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, 'rooms', roomName), (doc) => {
+      if (doc.data().players.length >= 3 && doc.data().host === user?.uid && !state.canStart) {
+        setState((prevState) => ({ ...prevState, canStart: true }));
+      } else if (doc.data().players.length < 3 && state.canStart) {
+        setState((prevState) => ({ ...prevState, canStart: false }));
+      }
+
+      if (doc.data().status === 'started') setState((prevState) => ({ ...prevState, hasStarted: true }));
+    });
+
+    return unsub;
+  }, [user]);
+
+  const startHandler = () => {
+    startGame(roomName);
+    setState((prevState) => ({ ...prevState, hasStarted: true }));
+  };
+
   const handleJoinedMeeting = () => {
     // write logic to add the person in waiting list if game is already being played
   };
@@ -64,7 +89,15 @@ const Room = ({ user }: { user: User | null }) => {
       {state.room?.name ? (
         <>
           <div ref={callWrapperRef} className='w-1/4' />
-          <div className='flex items-center justify-center w-3/4'>Render Game</div>
+          <div className='flex items-center justify-center w-3/4'>
+            {state.hasStarted ? (
+              <></>
+            ) : state.canStart ? (
+              <button onClick={startHandler}>Start Game!</button>
+            ) : (
+              <p>Waiting for people to join...</p>
+            )}
+          </div>
         </>
       ) : (
         <div className='flex items-center justify-center w-full'>Loading Room</div>

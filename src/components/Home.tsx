@@ -22,7 +22,7 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
       .post('https://api.daily.co/v1/rooms', JSON.stringify({ properties: { enable_chat: true } }), DAILY_API_HEADERS)
       // dummyGenerator()
       .then((response: any) => {
-        initializeRoom(response.data).then((res) => console.log('firebase add result: ', res));
+        initializeRoom(response.data, state.user.uid).then((res) => console.log('firebase add result: ', res));
         console.log(response.data);
         setState(response.data);
       })

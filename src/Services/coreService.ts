@@ -37,4 +37,16 @@ const addPlayer = async (roomName: string, playerName: any) => {
   }
 };
 
-export { addRoom, addPlayer };
+const addData = async (roomName: string, data: any) => {
+  try {
+    const docRef: any = await setDoc(doc(db, 'rooms', roomName), {
+      ...data,
+    });
+
+    console.log('Update Successful!!!');
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
+};
+
+export { addRoom, addPlayer, addData };

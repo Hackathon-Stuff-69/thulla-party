@@ -37,6 +37,8 @@ export type RoomItem = {
   url?: string;
   deck_data?: DeckData;
   players?: string[];
+  host: string;
+  game_status: string;
 };
 
 export type MainState = {
