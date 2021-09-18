@@ -26,6 +26,8 @@ import { firebaseConfig, DAILY_API_HEADERS, MainState, RoomItem } from './consta
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
+//, drawFromPile, listPiles, drawNoFromPile
+
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 console.log(app);
@@ -63,6 +65,10 @@ const App: React.FC = () => {
         .catch((error) => console.error(error));
   }, [state.user]);
 
+  // useEffect(() => {
+  //   tryDraw();
+  // }, []);
+
   return (
     <Router>
       <nav className='flex items-center justify-between flex-wrap bg-green-500 p-6'>
@@ -93,6 +99,12 @@ const App: React.FC = () => {
           />
         </Route>
       </Switch>
+
+      {state.user && (
+        <div className='flex flex-col'>
+          <button>Create Room</button>
+        </div>
+      )}
     </Router>
   );
 };
