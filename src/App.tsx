@@ -65,10 +65,6 @@ const App: React.FC = () => {
         .catch((error) => console.error(error));
   }, [state.user]);
 
-  // useEffect(() => {
-  //   tryDraw();
-  // }, []);
-
   return (
     <Router>
       <nav className='flex items-center justify-between flex-wrap bg-green-500 p-6'>
@@ -99,12 +95,6 @@ const App: React.FC = () => {
           />
         </Route>
       </Switch>
-
-      {state.user && (
-        <div className='flex flex-col'>
-          <button>Create Room</button>
-        </div>
-      )}
     </Router>
   );
 };

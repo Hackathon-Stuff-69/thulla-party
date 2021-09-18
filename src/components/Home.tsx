@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { User } from 'firebase/auth';
 import axios from 'axios';
 
 import { DAILY_API_HEADERS, MainState, RoomItem } from './../constants';

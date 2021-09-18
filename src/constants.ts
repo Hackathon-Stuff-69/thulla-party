@@ -10,7 +10,7 @@ export const firebaseConfig = {
   measurementId: 'G-KJZF459F9Y',
 };
 
-const DAILY_API_KEY = '';
+const DAILY_API_KEY = process.env.REACT_APP_DAILY_API_KEY;
 export const DAILY_API_HEADERS = { headers: { Authorization: `Bearer ${DAILY_API_KEY}` } };
 
 export type RoomItem = {

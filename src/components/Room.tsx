@@ -26,7 +26,7 @@ const Room = ({ user }: { user: User | null }) => {
     if (user)
       axios
         .get(`https://api.daily.co/v1/rooms/${roomName}`, DAILY_API_HEADERS)
-        .then((response) => setState((prevState) => ({ ...prevState, room: response.data.data })))
+        .then((response) => setState((prevState) => ({ ...prevState, room: response.data })))
         .catch(() => <Redirect to='/' />);
     // eslint-disable-next-line
   }, [user]);
