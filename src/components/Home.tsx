@@ -12,26 +12,35 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
       .catch((error) => console.error(error));
   };
 
-  // const addRoomtoDB = (room: RoomItem) => {
-  //   addRoom(room);
-  // };
-
   return (
-    <div>
+    <div
+      className='flex flex-col justify-center space-y-6 h-full w-screen'
+      style={{
+        background: `url('static/banner.png')`,
+        backgroundSize: 'cover',
+      }}
+    >
       {state.user && (
-        <div className='flex flex-col'>
-          <button onClick={createRoom}>Create Room</button>
-        </div>
-      )}
-      <div className='flex'>
-        {state.rooms.map((room) => (
-          <Link key={room.name} to={`/room/${room.name}`}>
-            <div className='flex items-center justify-center w-64 h-64'>
-              <button onClick={() => addRoom(room)}> {room.name}</button>
+        <>
+          <button
+            className='flex flex-col items-center justify-center mx-auto mt-6 w-64 h-24 bg-white rounded shadow-lg'
+            onClick={createRoom}
+          >
+            Create Room
+          </button>
+          <div className='flex mx-auto max-w-5xl'>
+            <div className='flex flex-wrap justify-center'>
+              {state.rooms.map((room, index) => (
+                <Link className='p-4' key={room.name} to={`/room/${room.name}`}>
+                  <div className='flex items-center justify-center bg-white w-64 h-64 rounded-lg shadow-lg'>
+                    Room {index + 1}
+                  </div>
+                </Link>
+              ))}
             </div>
-          </Link>
-        ))}
-      </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

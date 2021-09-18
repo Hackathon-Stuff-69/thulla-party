@@ -8,6 +8,7 @@ import {
   setPersistence,
   browserSessionPersistence,
   Auth,
+  signOut,
 } from 'firebase/auth';
 import axios from 'axios';
 
@@ -66,14 +67,20 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <nav className='flex items-center justify-between flex-wrap bg-green-500 p-6'>
+      <nav className='flex items-center justify-between flex-wrap bg-green-500 p-6 border-0 border-solid border-b border-white'>
         <div className='flex items-center flex-shrink-0 text-white mr-6'>
           <Link to='/'>
             <span className='font-semibold text-xl tracking-tight'>Thulla Party</span>
           </Link>
         </div>
         {state.user ? (
-          <div>{state.user.displayName}</div>
+          <span className='flex items-center text-white space-x-4'>
+            <img alt='Placeholder' className='block rounded-full w-8 h-8' src={state.user.photoURL} />
+            <p className='m-0 font-bold'>{state.user.displayName}</p>
+            <button className='m-0 px-2 rounded border border-solid border-white' onClick={() => signOut(auth)}>
+              Logout
+            </button>
+          </span>
         ) : (
           <button className='text-white' onClick={() => googleSignIn(auth, provider)}>
             Login with Google
