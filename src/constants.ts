@@ -20,9 +20,23 @@ export const app = initializeApp(firebaseConfig);
 
 export const db = getFirestore();
 
+export interface Players {
+  name: string;
+  playerId: number;
+}
+
+export type DeckData = {
+  deck_id: string;
+  remaining: number;
+  shuffled: boolean;
+  success: boolean;
+};
+
 export type RoomItem = {
   name?: string;
   url?: string;
+  deck_data?: DeckData;
+  players?: string[];
 };
 
 export type MainState = {

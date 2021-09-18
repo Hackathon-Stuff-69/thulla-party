@@ -1,14 +1,31 @@
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { addRoom } from '../Services/coreService';
+
+// import { collection, getDocs } from "firebase/firestore";
+
+// const querySnapshot = await getDocs(collection(db, "users"));
+// querySnapshot.forEach((doc) => {
+//   console.log(`${doc.id} => ${doc.data()}`);
+// });
+
+import { initializeRoom } from '../Game Logic/getawayFuncs';
 
 import { DAILY_API_HEADERS, MainState, RoomItem } from './../constants';
+
+const dummyGenerator = async () => {
+  return { data: { name: 'Test Daily Room Name', url: 'test.com' } };
+};
 
 const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem) => void }) => {
   const createRoom = () => {
     axios
       .post('https://api.daily.co/v1/rooms', JSON.stringify({ properties: { enable_chat: true } }), DAILY_API_HEADERS)
-      .then((response) => setState(response.data))
+      // dummyGenerator()
+      .then((response: any) => {
+        initializeRoom(response.data).then((res) => console.log('firebase add result: ', res));
+        console.log(response.data);
+        setState(response.data);
+      })
       .catch((error) => console.error(error));
   };
 

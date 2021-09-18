@@ -3,6 +3,7 @@ import { useParams, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { User } from 'firebase/auth';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
+import { addPlayer } from '../Services/coreService';
 
 import { DAILY_API_HEADERS, RoomItem } from './../constants';
 
@@ -20,7 +21,10 @@ const Room = ({ user }: { user: User | null }) => {
     if (user)
       axios
         .get(`https://api.daily.co/v1/rooms/${roomName}`, DAILY_API_HEADERS)
-        .then((response) => setState((prevState) => ({ ...prevState, room: response.data })))
+        .then((response) => {
+          addPlayer(roomName, user.displayName);
+          setState((prevState) => ({ ...prevState, room: response.data }));
+        })
         .catch(() => <Redirect to='/' />);
     // eslint-disable-next-line
   }, [user]);
