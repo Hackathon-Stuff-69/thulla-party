@@ -64,7 +64,7 @@ const Room = ({ user }: UserType) => {
       }
 
       // game state update for players other than host
-      if (doc.data().status === 'started' && state.hasStarted === false) {
+      if (doc.data().game_status === 'started' && state.hasStarted === false) {
         startGameNonHost(roomName, user.displayName);
         setState((prevState) => ({ ...prevState, hasStarted: true }));
       }
