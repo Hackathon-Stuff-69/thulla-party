@@ -18,7 +18,7 @@ type State = {
 };
 
 const Room = ({ user }: UserType) => {
-  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: false });
+  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: true });
   const callWrapperRef = useRef(null);
   const callFrame = useRef<DailyCall>();
   const { roomName } = useParams<{ roomName: string }>();
@@ -93,15 +93,17 @@ const Room = ({ user }: UserType) => {
         {state.room?.name ? (
           <>
             <div ref={callWrapperRef} className='w-1/4' />
-            <div className='flex items-center justify-center w-3/4'>
-              {state.hasStarted ? (
-                <Thulla />
-              ) : state.canStart ? (
-                <button onClick={startHandler}>Start Game!</button>
-              ) : (
-                <p>Waiting for people to join...</p>
-              )}
-            </div>
+            {state.hasStarted ? (
+              <Thulla />
+            ) : (
+              <div className='flex items-center justify-center w-3/4'>
+                {state.canStart ? (
+                  <button onClick={startHandler}>Start Game!</button>
+                ) : (
+                  <p>Waiting for people to join...</p>
+                )}
+              </div>
+            )}
           </>
         ) : (
           <div className='flex items-center justify-center w-full text-3xl'>Loading Room...</div>
