@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
@@ -10,10 +10,13 @@ import {
   setPersistence,
   browserSessionPersistence,
   Auth,
-  User,
 } from 'firebase/auth';
-// import axios from 'axios';
-// import axios from 'axios';
+import axios from 'axios';
+
+import Home from './components/Home';
+import Room from './components/Room';
+import { firebaseConfig, DAILY_API_HEADERS, MainState, RoomItem } from './constants';
+
 // import { getAuth } from 'firebase/auth';
 // import { getFirestore } from 'firebase/firestore';
 // import { getAnalytics } from "firebase/analytics";
@@ -22,55 +25,27 @@ import {
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: 'AIzaSyCpm0oz--wfGxXW8_t91UsCw5t51kkhKBs',
-  authDomain: 'thulla-party.firebaseapp.com',
-  projectId: 'thulla-party',
-  storageBucket: 'thulla-party.appspot.com',
-  messagingSenderId: '276975202499',
-  appId: '1:276975202499:web:7d8ab89d0e70a32ac1b276',
-  measurementId: 'G-KJZF459F9Y',
-};
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 console.log(app);
 // const analytics = getAnalytics(app);
 
-type State = {
-  user: User | null;
-  rooms: [];
-};
-
 const App: React.FC = () => {
   const provider = new GoogleAuthProvider();
   const auth = getAuth();
-  const [state, setState] = useState<State>({ user: auth.currentUser, rooms: [] });
+  const [state, setState] = useState<MainState>({ user: null, rooms: [] });
 
   const googleSignIn = (auth: Auth, provider: GoogleAuthProvider) =>
     setPersistence(auth, browserSessionPersistence)
       .then(() => {
-        // Existing and future Auth states are now persisted in the current
-        // session only. Closing the window would clear any existing state even
-        // if a user forgets to sign out.
-        // ...
-        // New sign-in will be persisted with session persistence.
-        return signInWithPopup(auth, provider).then((result) => {
-          // This gives you a Google Access Token. You can use it to access the Google API.
-          // const credential = GoogleAuthProvider.credentialFromResult(result);
-          // const token = credential.accessToken;
-          // The signed-in user info.
-          setState((prevState) => ({ ...prevState, user: result.user }));
-        });
+        return signInWithPopup(auth, provider).then((result) =>
+          setState((prevState) => ({ ...prevState, user: result.user })),
+        );
       })
       .catch((error) => {
-        // Handle Errors here.
-        // const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log(errorMessage);
+        console.error(error);
       });
-
-  console.log(state);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -80,34 +55,44 @@ const App: React.FC = () => {
     return unsubscribe;
   }, [auth]);
 
+  useEffect(() => {
+    if (state.user)
+      axios
+        .get('https://api.daily.co/v1/rooms', DAILY_API_HEADERS)
+        .then((response) => setState((prevState) => ({ ...prevState, rooms: response.data.data })))
+        .catch((error) => console.error(error));
+  }, [state.user]);
+
   return (
     <Router>
-      <Switch>
-        {/* <Route exact path='/todos'>
-            <Todos />
-          </Route> */}
-      </Switch>
-
-      <div>
-        <nav className='flex items-center justify-between flex-wrap bg-green-500 p-6'>
-          <div className='flex items-center flex-shrink-0 text-white mr-6'>
+      <nav className='flex items-center justify-between flex-wrap bg-green-500 p-6'>
+        <div className='flex items-center flex-shrink-0 text-white mr-6'>
+          <Link to='/'>
             <span className='font-semibold text-xl tracking-tight'>Thulla Party</span>
-          </div>
-          {state.user ? (
-            <div>{state.user.displayName}</div>
-          ) : (
-            <button className='text-white' onClick={() => googleSignIn(auth, provider)}>
-              Login Google
-            </button>
-          )}
-        </nav>
-
-        {state.user && (
-          <div className='flex flex-col'>
-            <button>Create Room</button>
-          </div>
+          </Link>
+        </div>
+        {state.user ? (
+          <div>{state.user.displayName}</div>
+        ) : (
+          <button className='text-white' onClick={() => googleSignIn(auth, provider)}>
+            Login with Google
+          </button>
         )}
-      </div>
+      </nav>
+
+      <Switch>
+        <Route path='/room/:roomName'>
+          <Room user={state.user} />
+        </Route>
+        <Route path='/'>
+          <Home
+            state={state}
+            setState={(room: RoomItem) =>
+              setState((prevState) => ({ ...prevState, rooms: [...prevState.rooms, room] }))
+            }
+          />
+        </Route>
+      </Switch>
     </Router>
   );
 };
