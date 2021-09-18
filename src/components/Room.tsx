@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { User } from 'firebase/auth';
 import DailyIframe, { DailyCall } from '@daily-co/daily-js';
 import { doc, onSnapshot } from 'firebase/firestore';
 
@@ -11,14 +10,18 @@ import { DAILY_API_HEADERS, RoomItem, db, UserType } from './../constants';
 import { startGame } from '../Game Logic/getawayFuncs';
 import Header from './Header';
 
+const deleteRoom = (roomName: string, history) =>
+  axios.delete(`https://api.daily.co/v1/rooms/${roomName}`, DAILY_API_HEADERS).finally(() => history.push('/'));
+
 type State = {
   room?: RoomItem;
   canStart: boolean;
   hasStarted: boolean;
+  isHost: boolean;
 };
 
 const Room = ({ user }: UserType) => {
-  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: true });
+  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: true, isHost: false });
   const callWrapperRef = useRef(null);
   const callFrame = useRef<DailyCall>();
   const { roomName } = useParams<{ roomName: string }>();
@@ -57,6 +60,7 @@ const Room = ({ user }: UserType) => {
   // eslint-disable-next-line
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'rooms', roomName), (doc) => {
+      if (doc.data().host === user?.uid && !state.isHost) setState((prevState) => ({ ...prevState, isHost: true }));
       if (doc.data().players.length >= 3 && doc.data().host === user?.uid && !state.canStart) {
         setState((prevState) => ({ ...prevState, canStart: true }));
       } else if (doc.data().players.length < 3 && state.canStart) {
@@ -79,17 +83,21 @@ const Room = ({ user }: UserType) => {
   };
 
   const handleLeaveMeeting = () => {
-    if (!callFrame.current?.participants.length)
-      axios
-        .delete(`https://api.daily.co/v1/rooms/${roomName}`, DAILY_API_HEADERS)
-        .then(() => history.push('/'))
-        .catch(() => history.push('/'));
+    if (!callFrame.current?.participants.length) deleteRoom(roomName, history);
   };
 
   return (
     <>
       <Header user={user} />
-      <div className='flex h-screen w-screen'>
+      <div className='flex h-screen w-screen relative'>
+        {state.isHost && (
+          <button
+            className='flex absolute right-0 z-10 rounded mt-6 mr-6 text-sm p-2 transition duration-500 ease-in-out bg-black border-2 border-gray-300 font-bold text-white bg-opacity-20 hover:bg-white hover:bg-opacity-90 hover:text-black'
+            onClick={() => deleteRoom(roomName, history)}
+          >
+            Delete Room
+          </button>
+        )}
         {state.room?.name ? (
           <>
             <div ref={callWrapperRef} className='w-1/4' />
