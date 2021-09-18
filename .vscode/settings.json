@@ -1,0 +1,12 @@
+{
+  "python.linting.pylintEnabled": true,
+  "python.linting.enabled": true,
+  "eslint.packageManager": "yarn",
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "terminal.integrated.scrollback": 10000,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  }
+}
