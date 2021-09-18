@@ -1,19 +1,21 @@
-import { firebase } from 'firebase/firebase-app';
-import { collection, addDoc } from 'firebase/firestore';
+// Initialize Cloud Firestore through Firebase
+import { initializeApp } from 'firebase/app';
+import { addDoc, collection, getFirestore } from 'firebase/firestore';
+import { firebaseConfig, RoomItem } from '../constants';
+const firebaseApp = initializeApp(firebaseConfig);
 
-import { RoomItem } from '../constants';
-const db = firebase.firestore();
+const db = getFirestore();
 
 const addRoom = async (room: RoomItem) => {
-  //   const roomRef = await addDoc(collection(db, 'rooms'), {
-  //     name: room.name,
-  //     url: room.url,
-  //   });
-
-  const roomRef = db.collection('rooms').add({
-    name: room.name,
-    url: room.url,
-  });
+  try {
+    const docRef = await addDoc(collection(db, 'rooms'), {
+      name: room.name,
+      url: room.url,
+    });
+    console.log('Document written with ID: ', docRef.id);
+  } catch (e) {
+    console.error('Error adding document: ', e);
+  }
 };
 
 export { addRoom };
