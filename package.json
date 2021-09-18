@@ -7,6 +7,7 @@
   "dependencies": {
     "@craco/craco": "6.2.0",
     "@daily-co/daily-js": "^0.18.0",
+    "@slack/client": "^5.0.2",
     "axios": "^0.21.4",
     "firebase": "^9.0.2",
     "react-dom": "^17.0.2",

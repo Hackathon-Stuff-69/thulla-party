@@ -67,7 +67,7 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <nav className='flex items-center justify-between flex-wrap bg-green-500 p-6 border-0 border-solid border-b border-white'>
+      <nav className='flex items-center justify-between flex-wrap bg-black p-6'>
         <div className='flex items-center flex-shrink-0 text-white mr-6'>
           <Link to='/'>
             <span className='font-semibold text-xl tracking-tight'>Thulla Party</span>
