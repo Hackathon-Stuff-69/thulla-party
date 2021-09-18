@@ -3,6 +3,8 @@ const split = (x: number, n: number) => {
   // number into exactly 'N' parts
   const retList = [];
 
+  console.log('x', x, 'n', n);
+
   if (x < n) return [];
   // If x % n == 0 then the minimum
   // difference is 0 and all
@@ -21,7 +23,7 @@ const split = (x: number, n: number) => {
       else retList.push(pp);
     }
   }
-
+  console.log(retList);
   return retList;
 };
 

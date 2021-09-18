@@ -63,9 +63,15 @@ const Room = ({ user }: UserType) => {
         setState((prevState) => ({ ...prevState, canStart: false }));
       }
 
-      // game state update for players other than host
+      //update host status from backend
+      if (doc.data()?.game_status === 'started' && state.hasStarted === false && doc.data()?.host !== user.uid) {
+        setState((prevState) => ({ ...prevState, hasStarted: true }));
+      }
+
+      //game state update from backend
       if (doc.data()?.game_status === 'started' && state.hasStarted === false) {
-        startGameNonHost(roomName, user.displayName);
+        // game start for players other than host
+        if (doc.data()?.host !== user.uid) startGameNonHost(roomName, user.displayName);
         setState((prevState) => ({ ...prevState, hasStarted: true }));
       }
     });

@@ -37,7 +37,11 @@ const startGame = async (roomName, hostName) => {
 
     const cardsToDraw = split(52, noOfPlayers);
 
+    console.log(cardsToDraw);
+
     const hostDrawNo = cardsToDraw.pop();
+
+    console.log(cardsToDraw);
 
     const hostDraw: any = await basicFuncs.drawCards(deck_id, hostDrawNo);
 
@@ -55,6 +59,8 @@ const startGameNonHost = async (roomName, playerName) => {
     const docSnap = await getDoc(roomsRef);
 
     const docData = await docSnap.data();
+
+    console.log('IMPOSTER AMONGUS');
 
     const deck_id = docData.deck_data.deck_id;
 
