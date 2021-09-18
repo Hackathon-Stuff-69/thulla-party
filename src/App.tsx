@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
-// Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/firebase-app';
 import {
   getAuth,
   signInWithPopup,
@@ -15,7 +13,7 @@ import axios from 'axios';
 
 import Home from './components/Home';
 import Room from './components/Room';
-import { firebaseConfig, DAILY_API_HEADERS, MainState, RoomItem } from './constants';
+import { DAILY_API_HEADERS, MainState, RoomItem, app } from './constants';
 
 // import { getAuth } from 'firebase/auth';
 // import { getFirestore } from 'firebase/firestore';
@@ -29,9 +27,9 @@ import { firebaseConfig, DAILY_API_HEADERS, MainState, RoomItem } from './consta
 //, drawFromPile, listPiles, drawNoFromPile
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
 
-console.log(app);
+// console.log(app);
 // const analytics = getAnalytics(app);
 
 const App: React.FC = () => {

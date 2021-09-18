@@ -1,10 +1,9 @@
 // Initialize Cloud Firestore through Firebase
-import { initializeApp } from 'firebase/app';
-import { addDoc, collection, getFirestore } from 'firebase/firestore';
-import { firebaseConfig, RoomItem } from '../constants';
-const firebaseApp = initializeApp(firebaseConfig);
+import { addDoc, collection } from 'firebase/firestore';
+import { db, RoomItem } from '../constants';
+// const firebaseApp = initializeApp(firebaseConfig);
 
-const db = getFirestore();
+// const db = getFirestore();
 
 const addRoom = async (room: RoomItem) => {
   try {
