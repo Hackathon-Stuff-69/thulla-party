@@ -11,7 +11,7 @@ type State = {
 };
 
 const Room = ({ user }: { user: User | null }) => {
-  const [state, setState] = useState<State>();
+  const [state, setState] = useState<State>({ room: null });
   const callWrapperRef = useRef(null);
   const callFrame = useRef<DailyCall>();
   const { roomName } = useParams<{ roomName: string }>();
