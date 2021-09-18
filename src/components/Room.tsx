@@ -16,7 +16,7 @@ type State = {
 const Room = ({ user }: { user: User | null }) => {
   const [state, setState] = useState<State>({
     isScreenSharing: false,
-    // room: { name: 'yolo', url: 'https://boriat-bhagao.daily.co/7NtCkTxsgu3EhEgX3VgC' },
+    room: { name: 'yolo', url: 'https://boriat-bhagao.daily.co/7NtCkTxsgu3EhEgX3VgC' },
   });
   const callWrapperRef = useRef(null);
   const callFrame = useRef<DailyCall>();
@@ -61,26 +61,26 @@ const Room = ({ user }: { user: User | null }) => {
         .catch(() => <Redirect to='/' />);
   };
 
-  // const toggleCamera = () => {
-  //   if (callFrame.current) callFrame.current.setLocalVideo(!callFrame.current.participants().local.video);
-  // };
+  const toggleCamera = () => {
+    if (callFrame.current) callFrame.current.setLocalVideo(!callFrame.current.participants().local.video);
+  };
 
-  // const toggleMic = () => {
-  //   if (callFrame.current) callFrame.current.setLocalAudio(!callFrame.current.participants().local.audio);
-  // };
+  const toggleMic = () => {
+    if (callFrame.current) callFrame.current.setLocalAudio(!callFrame.current.participants().local.audio);
+  };
 
-  // const toggleScreenShare = () => {
-  //   if (callFrame.current) {
-  //     const callFrameTemp = callFrame.current;
-  //     const participants = callFrameTemp.participants();
-  //     if (participants.local) {
-  //       if (!participants.local.screen) callFrameTemp.startScreenShare();
-  //       else if (participants.local.screen) callFrameTemp.stopScreenShare();
+  const toggleScreenShare = () => {
+    if (callFrame.current) {
+      const callFrameTemp = callFrame.current;
+      const participants = callFrameTemp.participants();
+      if (participants.local) {
+        if (!participants.local.screen) callFrameTemp.startScreenShare();
+        else if (participants.local.screen) callFrameTemp.stopScreenShare();
 
-  //       setState((prevState) => ({ ...prevState, isScreenSharing: !prevState.isScreenSharing }));
-  //     }
-  //   }
-  // };
+        setState((prevState) => ({ ...prevState, isScreenSharing: !prevState.isScreenSharing }));
+      }
+    }
+  };
 
   return (
     <div className='flex h-screen w-screen'>
@@ -88,7 +88,7 @@ const Room = ({ user }: { user: User | null }) => {
         <>
           <div ref={callWrapperRef} className='w-1/4' />
           <div className='flex items-center justify-center w-3/4'>Render Game</div>
-          {/* <div id='call-controls-wrapper' className='call-controls-wrapper hide'>
+          <div id='call-controls-wrapper' className='call-controls-wrapper hide'>
             <div className='call-controls'>
               <div className='controls-header'>
                 <h3>Call overview</h3>
@@ -111,7 +111,7 @@ const Room = ({ user }: { user: User | null }) => {
                 </div>
               </div>
             </div>
-          </div> */}
+          </div>
         </>
       ) : (
         <div className='flex items-center justify-center w-full'>Loading Room</div>

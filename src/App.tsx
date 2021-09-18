@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 // Import the functions you need from the SDKs you need
-import { initializeApp } from 'firebase/app';
+import { initializeApp, firebase } from 'firebase/firebase-app';
 import {
   getAuth,
   signInWithPopup,
@@ -29,7 +29,8 @@ import { firebaseConfig, DAILY_API_HEADERS, MainState, RoomItem } from './consta
 //, drawFromPile, listPiles, drawNoFromPile
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = firebase.initializeApp(firebaseConfig);
+
 console.log(app);
 // const analytics = getAnalytics(app);
 
