@@ -8,7 +8,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import Thulla from './Games/Thulla';
 import { addPlayer } from '../Services/coreService';
 import { DAILY_API_HEADERS, RoomItem, db, UserType } from './../constants';
-import { startGame } from '../Game Logic/getawayFuncs';
+import { startGame, startGameNonHost } from '../Game Logic/getawayFuncs';
 import Header from './Header';
 
 type State = {
@@ -57,20 +57,24 @@ const Room = ({ user }: UserType) => {
   // eslint-disable-next-line
   useEffect(() => {
     const unsub = onSnapshot(doc(db, 'rooms', roomName), (doc) => {
-      if (doc.data().players.length >= 3 && doc.data().host === user?.uid && !state.canStart) {
+      if (doc.data()?.players.length >= 3 && doc.data().host === user?.uid && !state.canStart) {
         setState((prevState) => ({ ...prevState, canStart: true }));
       } else if (doc.data().players.length < 3 && state.canStart) {
         setState((prevState) => ({ ...prevState, canStart: false }));
       }
 
-      if (doc.data().status === 'started') setState((prevState) => ({ ...prevState, hasStarted: true }));
+      // game state update for players other than host
+      if (doc.data().status === 'started' && state.hasStarted === false) {
+        startGameNonHost(roomName, user.displayName);
+        setState((prevState) => ({ ...prevState, hasStarted: true }));
+      }
     });
 
     return unsub;
   }, [user]);
 
   const startHandler = () => {
-    startGame(roomName);
+    startGame(roomName, user.displayName);
     setState((prevState) => ({ ...prevState, hasStarted: true }));
   };
 

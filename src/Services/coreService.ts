@@ -39,9 +39,13 @@ const addPlayer = async (roomName: string, playerName: any) => {
 
 const addData = async (roomName: string, data: any) => {
   try {
-    const docRef: any = await setDoc(doc(db, 'rooms', roomName), {
-      ...data,
-    });
+    const docRef: any = await setDoc(
+      doc(db, 'rooms', roomName),
+      {
+        ...data,
+      },
+      { merge: true },
+    );
 
     console.log('Update Successful!!!');
   } catch (e) {
