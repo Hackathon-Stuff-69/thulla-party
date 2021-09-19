@@ -8,6 +8,7 @@ import {
 } from 'firebase/auth';
 import { Link, useHistory } from 'react-router-dom';
 import { auth, provider, UserType } from './../constants';
+import logo from '../images/logo.png';
 
 const Header = ({ user }: UserType) => {
   const history = useHistory();
@@ -25,7 +26,14 @@ const Header = ({ user }: UserType) => {
     <nav className='flex items-center justify-between flex-wrap p-6 bg-primary'>
       <div className='flex items-center flex-shrink-0 text-white mr-6'>
         <Link to='/'>
-          <img src='static/logo.png' className='w-24 h-16' />
+          <div
+            style={{
+              background: `url(${logo})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+            className='w-24 h-16'
+          />
         </Link>
       </div>
       {user ? (
