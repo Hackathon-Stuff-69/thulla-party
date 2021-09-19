@@ -20,16 +20,28 @@ type State = {
   canStart: boolean;
   hasStarted: boolean;
   isHost: boolean;
+  deckId: string;
 };
 
 const Room = ({ user }: UserType) => {
-  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: false, isHost: false });
+  const [state, setState] = useState<State>({
+    room: null,
+    canStart: false,
+    hasStarted: false,
+    isHost: false,
+    deckId: null,
+  });
   const [tableCards, setTableCards] = useState([]);
   const [playerCards, setPlayerCards] = useState([]);
   const callWrapperRef = useRef(null);
+  const specs = useRef([]);
   const callFrame = useRef<DailyCall>();
   const { roomName } = useParams<{ roomName: string }>();
   const history = useHistory();
+
+  useEffect(() => {
+    getDeckId(roomName).then((deckId) => setState((prevState) => ({ ...prevState, deckId })));
+  }, []);
 
   useEffect(() => {
     if (user)
@@ -95,10 +107,27 @@ const Room = ({ user }: UserType) => {
       });
 
       getTableCards().then((res: any) => {
-        setTableCards(res?.result?.piles?.['tablePile'] || []);
+        const tableCards = res?.result?.piles?.['tablePile']?.cards || [];
+        console.log('tableCards', tableCards);
+        setSpecs(tableCards);
+        setTableCards(tableCards);
       });
     }
   }, [state.hasStarted]);
+
+  const setSpecs = (tableCards) => {
+    const specsArray = [];
+    for (let i = 0; i < tableCards.length; i++) {
+      specsArray.push({
+        marginTop: Math.floor(Math.random() * 230),
+        marginLeft: Math.floor(Math.random() * 230),
+        marginRight: Math.floor(Math.random() * 230),
+        transform: Math.floor(Math.random() * 360),
+      });
+    }
+    specs.current = specsArray;
+    console.log('specs.current', specs.current);
+  };
 
   const getPlayerCards = async () => {
     const deckId = await getDeckId(roomName);
@@ -118,18 +147,29 @@ const Room = ({ user }: UserType) => {
       });
 
       getTableCards().then((res: any) => {
-        setTableCards(res?.result?.piles?.['tablePile'] || []);
+        const tableCards = res?.result?.piles?.['tablePile']?.cards || [];
+        setSpecs(tableCards);
+        setTableCards(tableCards);
       });
     });
     setState((prevState) => ({ ...prevState, hasStarted: true }));
   };
 
-  const transferCard = (deckID, pileID, cardToDraw) => {
-    drawFromPile(deckID, pileID, [cardToDraw]).then(() => {
-      addToPiles(deckID, 'tablePile', [cardToDraw]).then(()=>{
-        setPlayerCards(())
-        setTableCards()
-      })
+  const transferCard = (cardToDraw) => {
+    drawFromPile(state.deckId, user?.displayName.replace(' ', ''), [cardToDraw]).then(() => {
+      addToPiles(state.deckId, 'tablePile', [cardToDraw]).then(() => {
+        setPlayerCards((prevState) => prevState.filter((card) => card.code !== cardToDraw.code));
+        specs.current = [
+          ...specs.current,
+          {
+            marginTop: Math.floor(Math.random() * 230),
+            marginLeft: Math.floor(Math.random() * 230),
+            marginRight: Math.floor(Math.random() * 230),
+            transform: Math.floor(Math.random() * 360),
+          },
+        ];
+        setTableCards((prevState) => [...prevState, cardToDraw]);
+      });
     });
   };
 
@@ -157,7 +197,12 @@ const Room = ({ user }: UserType) => {
           <>
             <div ref={callWrapperRef} className='w-1/4' />
             {state.hasStarted ? (
-              <Thulla playerCards={playerCards} tableCards={tableCards} transferCard={transferCard} />
+              <Thulla
+                playerCards={playerCards}
+                tableCards={tableCards}
+                transferCard={transferCard}
+                specs={specs.current}
+              />
             ) : (
               <div className='flex items-center justify-center w-3/4'>
                 {state.canStart ? (
