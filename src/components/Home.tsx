@@ -92,7 +92,7 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
             </div>
           </>
         ) : (
-          <div className='flex items-center justify-center transition duration-500 ease-in-out bg-black border-2 border-gray-300 font-bold text-white bg-opacity-20 hover:bg-white hover:bg-opacity-90 hover:text-black mx-auto w-64 p-4 rounded shadow-lg'>
+          <div className='flex items-center justify-center transition duration-500 ease-in-out border-2 border-gray-300 font-bold bg-opacity-20 bg-white bg-opacity-90 text-black mx-auto w-64 p-4 rounded shadow-lg'>
             Login to Boriat Bhagao
           </div>
         )}
