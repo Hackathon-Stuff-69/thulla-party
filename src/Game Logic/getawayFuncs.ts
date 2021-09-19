@@ -47,7 +47,7 @@ const startGame = async (roomName, hostName) => {
 
     const hostPile = await basicFuncs.addToPiles(deck_id, hostName.replace(' ', ''), hostDraw?.result.cards);
 
-    await addData(roomName, { game_status: 'started', cards_to_draw: cardsToDraw });
+    await addData(roomName, { turn: 0, game_status: 'started', cards_to_draw: cardsToDraw });
   } catch (err) {
     console.log(err);
   }
@@ -85,6 +85,10 @@ export const getDeckId = async (roomName) => {
   const docData = await docSnap.data();
   const deckId = docData.deck_data.deck_id;
   return deckId;
+};
+
+export const updateTurn = async (roomName, noOfPlayers, turn) => {
+  await addData(roomName, { turn: (turn + 1) % noOfPlayers });
 };
 
 export { initializeRoom, startGame, startGameNonHost };

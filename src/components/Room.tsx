@@ -7,7 +7,7 @@ import { doc, onSnapshot } from 'firebase/firestore';
 import Thulla from './Games/Thulla';
 import { addPlayer } from '../Services/coreService';
 import { DAILY_API_HEADERS, RoomItem, db, UserType } from './../constants';
-import { startGame, startGameNonHost } from '../Game Logic/getawayFuncs';
+import { startGame, startGameNonHost, updateTurn } from '../Game Logic/getawayFuncs';
 import { addToPiles, drawFromPile, listPiles } from '../Game Logic/basicFuncs';
 import { getDeckId } from '../Game Logic/getawayFuncs';
 import Header from './Header';
@@ -21,6 +21,7 @@ type State = {
   hasStarted: boolean;
   isHost: boolean;
   deckId: string;
+  turn?: number;
 };
 
 const Room = ({ user }: UserType) => {
@@ -30,6 +31,7 @@ const Room = ({ user }: UserType) => {
     hasStarted: false,
     isHost: false,
     deckId: null,
+    turn: null,
   });
   const [tableCards, setTableCards] = useState([]);
   const [playerCards, setPlayerCards] = useState([]);
@@ -38,6 +40,7 @@ const Room = ({ user }: UserType) => {
   const callFrame = useRef<DailyCall>();
   const { roomName } = useParams<{ roomName: string }>();
   const history = useHistory();
+  const playerRef = useRef<[]>([]);
 
   useEffect(() => {
     getDeckId(roomName).then((deckId) => setState((prevState) => ({ ...prevState, deckId })));
@@ -85,14 +88,16 @@ const Room = ({ user }: UserType) => {
 
       //update host status from backend
       if (doc.data()?.game_status === 'started' && state.hasStarted === false && doc.data()?.host !== user.uid) {
-        setState((prevState) => ({ ...prevState, hasStarted: true }));
+        setState((prevState) => ({ ...prevState, hasStarted: true, turn: doc.data()?.turn }));
+        playerRef.current = doc.data()?.players;
       }
 
       //game state update from backend
       if (doc.data()?.game_status === 'started' && state.hasStarted === false) {
         // game start for players other than host
         if (doc.data()?.host !== user.uid) startGameNonHost(roomName, user.displayName);
-        setState((prevState) => ({ ...prevState, hasStarted: true }));
+        setState((prevState) => ({ ...prevState, hasStarted: true, turn: doc.data()?.turn }));
+        playerRef.current = doc.data()?.players;
       }
     });
 
@@ -158,6 +163,7 @@ const Room = ({ user }: UserType) => {
   const transferCard = (cardToDraw) => {
     drawFromPile(state.deckId, user?.displayName.replace(' ', ''), [cardToDraw]).then(() => {
       addToPiles(state.deckId, 'tablePile', [cardToDraw]).then(() => {
+        updateTurn(roomName, playerRef.current.length || 0, state.turn);
         setPlayerCards((prevState) => prevState.filter((card) => card.code !== cardToDraw.code));
         specs.current = [
           ...specs.current,

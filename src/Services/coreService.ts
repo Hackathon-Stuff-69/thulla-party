@@ -16,7 +16,7 @@ const addRoom = async (room: RoomItem) => {
       ...room,
     });
 
-    console.log('Add room successfull!!!');
+    console.log('Add room successful!!!');
   } catch (e) {
     console.error('Error adding document: ', e);
   }
