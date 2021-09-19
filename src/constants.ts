@@ -4,7 +4,7 @@ import { getFirestore } from 'firebase/firestore';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyCpm0oz--wfGxXW8_t91UsCw5t51kkhKBs',
-  authDomain: 'thulla-party.herokuapp.com',
+  authDomain: 'thulla-party.firebaseapp.com',
   projectId: 'thulla-party',
   storageBucket: 'thulla-party.appspot.com',
   messagingSenderId: '276975202499',
