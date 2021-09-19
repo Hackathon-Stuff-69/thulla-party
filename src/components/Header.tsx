@@ -25,7 +25,7 @@ const Header = ({ user }: UserType) => {
     <nav className='flex items-center justify-between flex-wrap p-6 bg-primary'>
       <div className='flex items-center flex-shrink-0 text-white mr-6'>
         <Link to='/'>
-          <span className='font-semibold text-xl tracking-tight'>Thulla Party</span>
+          <img src='static/logo.png' className='w-24 h-16' />
         </Link>
       </div>
       {user ? (
