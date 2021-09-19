@@ -54,12 +54,12 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
       >
         {state.user ? (
           <>
-            <form className='flex flex-col items-center justify-center mx-auto mt-6 w-64 p-4 bg-white rounded shadow-lg space-y-2'>
+            <form className='flex flex-col transition duration-500 ease-in-out bg-black border-2 border-gray-300 font-bold text-white bg-opacity-20 hover:bg-white hover:bg-opacity-90 hover:text-black items-center justify-center mx-auto mt-6 w-64 p-4 rounded shadow-lg space-y-2'>
               {homeState.error && <p className='m-0 text-red-500 text-center'>{homeState.error}</p>}
               <input
                 className={`${
                   homeState.error ? 'border border-solid border-red-500' : ''
-                } focus:outline-none p-2 rounded`}
+                } bg-transparent opacity-80 focus:outline-none p-2 rounded`}
                 placeholder='Enter Room Name'
                 onChange={(e) => setHomeState((prevState) => ({ ...prevState, roomName: e.target.value }))}
                 required
@@ -80,7 +80,10 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
               <div className='flex flex-wrap justify-center'>
                 {state.rooms.map((room) => (
                   <Link className='p-4' key={room.name} to={`/room/${room.name}`}>
-                    <div className='flex items-center justify-center bg-white w-64 h-64 rounded-lg shadow-lg'>
+                    <div
+                      id='tcard'
+                      className='flex items-center transition duration-500 ease-in-out bg-black border-2 border-gray-300 font-bold text-white bg-opacity-20 hover:bg-white hover:bg-opacity-90 hover:text-black justify-center w-64 h-64 rounded-lg shadow-lg'
+                    >
                       {room.name}
                     </div>
                   </Link>
@@ -89,7 +92,7 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
             </div>
           </>
         ) : (
-          <div className='flex items-center justify-center mx-auto w-64 p-4 bg-white rounded shadow-lg'>
+          <div className='flex items-center justify-center transition duration-500 ease-in-out bg-black border-2 border-gray-300 font-bold text-white bg-opacity-20 hover:bg-white hover:bg-opacity-90 hover:text-black mx-auto w-64 p-4 rounded shadow-lg'>
             Login to Bhagao Boriyat
           </div>
         )}
