@@ -88,6 +88,7 @@ export const getDeckId = async (roomName) => {
 };
 
 export const updateTurn = async (roomName, noOfPlayers, turn) => {
+  console.log(roomName, noOfPlayers, turn);
   await addData(roomName, { turn: (turn + 1) % noOfPlayers });
 };
 

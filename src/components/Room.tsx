@@ -90,6 +90,11 @@ const Room = ({ user }: UserType) => {
       if (doc.data()?.game_status === 'started' && state.hasStarted === false && doc.data()?.host !== user.uid) {
         setState((prevState) => ({ ...prevState, hasStarted: true, turn: doc.data()?.turn }));
         playerRef.current = doc.data()?.players;
+        getTableCards().then((res: any) => {
+          const tableCards = res?.result?.piles?.['tablePile']?.cards || [];
+          setSpecs(tableCards);
+          setTableCards(tableCards);
+        });
       }
 
       //game state update from backend
@@ -98,6 +103,11 @@ const Room = ({ user }: UserType) => {
         if (doc.data()?.host !== user.uid) startGameNonHost(roomName, user.displayName);
         setState((prevState) => ({ ...prevState, hasStarted: true, turn: doc.data()?.turn }));
         playerRef.current = doc.data()?.players;
+        getTableCards().then((res: any) => {
+          const tableCards = res?.result?.piles?.['tablePile']?.cards || [];
+          setSpecs(tableCards);
+          setTableCards(tableCards);
+        });
       }
     });
 
