@@ -2,364 +2,267 @@ import { useState, useEffect, useRef } from 'react';
 import Card from './Card';
 import top_view_table from '../../../static/top_view_table.png';
 
-const cards = [
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/8C.png',
-    value: '8',
-    suit: 'CLUBS',
-    code: '8C',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/8C.png',
-    value: '8',
-    suit: 'CLUBS',
-    code: '8C',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/8C.png',
-    value: '8',
-    suit: 'CLUBS',
-    code: '8C',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/8C.png',
-    value: '8',
-    suit: 'CLUBS',
-    code: '8C',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/8C.png',
-    value: '8',
-    suit: 'CLUBS',
-    code: '8C',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/8C.png',
-    value: '8',
-    suit: 'CLUBS',
-    code: '8C',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/8C.png',
-    value: '8',
-    suit: 'CLUBS',
-    code: '8C',
-  },
-  {
-    image: 'https://deckofcardsapi.com/static/img/KH.png',
-    value: 'KING',
-    suit: 'HEARTS',
-    code: 'KH',
-  },
-];
-
-const Thulla = () => {
-  const [loaded, setLoaded] = useState(false);
-  const [tableCards, setTableCards] = useState([]);
-  const [playerCards, setPlayerCards] = useState([]);
+const Thulla = ({ playerCards, tableCards }) => {
   const specs = useRef([]);
 
   useEffect(() => {
-    setPlayerCards([
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/8C.png',
-        value: '8',
-        suit: 'CLUBS',
-        code: '8C',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-      {
-        image: 'https://deckofcardsapi.com/static/img/KH.png',
-        value: 'KING',
-        suit: 'HEARTS',
-        code: 'KH',
-      },
-    ]);
-    setTableCards(cards);
+    // setPlayerCards([
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/8C.png',
+    //     value: '8',
+    //     suit: 'CLUBS',
+    //     code: '8C',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    //   {
+    //     image: 'https://deckofcardsapi.com/static/img/KH.png',
+    //     value: 'KING',
+    //     suit: 'HEARTS',
+    //     code: 'KH',
+    //   },
+    // ]);
 
     const specsArray = [];
-    for (let i = 0; i < cards.length; i++) {
+    for (let i = 0; i < tableCards.length; i++) {
       specsArray.push({
         marginTop: Math.floor(Math.random() * 230),
         marginLeft: Math.floor(Math.random() * 230),
@@ -368,13 +271,9 @@ const Thulla = () => {
       });
     }
     specs.current = specsArray;
-
-    setLoaded(true);
   }, []);
 
-  return !loaded ? (
-    <div className='flex items-center justify-center w-3/4 text-3xl'>Loading...</div>
-  ) : (
+  return (
     <>
       <div
         className='flex w-3/4 h-full'

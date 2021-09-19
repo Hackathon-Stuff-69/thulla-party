@@ -78,4 +78,13 @@ const startGameNonHost = async (roomName, playerName) => {
   }
 };
 
+export const getDeckId = async (roomName) => {
+  const roomsRef = doc(db, 'rooms', roomName);
+  const docSnap = await getDoc(roomsRef);
+
+  const docData = await docSnap.data();
+  const deckId = docData.deck_data.deck_id;
+  return deckId;
+};
+
 export { initializeRoom, startGame, startGameNonHost };

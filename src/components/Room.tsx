@@ -8,6 +8,8 @@ import Thulla from './Games/Thulla';
 import { addPlayer } from '../Services/coreService';
 import { DAILY_API_HEADERS, RoomItem, db, UserType } from './../constants';
 import { startGame, startGameNonHost } from '../Game Logic/getawayFuncs';
+import { addToPiles, drawFromPile, listPiles } from '../Game Logic/basicFuncs';
+import { getDeckId } from '../Game Logic/getawayFuncs';
 import Header from './Header';
 
 const deleteRoom = (roomName: string, history) =>
@@ -21,7 +23,9 @@ type State = {
 };
 
 const Room = ({ user }: UserType) => {
-  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: true, isHost: false });
+  const [state, setState] = useState<State>({ room: null, canStart: false, hasStarted: false, isHost: false });
+  const [tableCards, setTableCards] = useState([]);
+  const [playerCards, setPlayerCards] = useState([]);
   const callWrapperRef = useRef(null);
   const callFrame = useRef<DailyCall>();
   const { roomName } = useParams<{ roomName: string }>();
@@ -83,9 +87,50 @@ const Room = ({ user }: UserType) => {
     return unsub;
   }, [user]);
 
+  useEffect(() => {
+    if (state.hasStarted) {
+      getPlayerCards().then((res: any) => {
+        console.log(res);
+        setPlayerCards(res?.result?.piles?.[user?.displayName.replace(' ', '')].cards);
+      });
+
+      getTableCards().then((res: any) => {
+        setTableCards(res?.result?.piles?.['tablePile'] || []);
+      });
+    }
+  }, [state.hasStarted]);
+
+  const getPlayerCards = async () => {
+    const deckId = await getDeckId(roomName);
+    return await listPiles(deckId, user?.displayName.replace(' ', ''));
+  };
+
+  const getTableCards = async () => {
+    const deckId = await getDeckId(roomName);
+    return await listPiles(deckId, 'tablePile');
+  };
+
   const startHandler = () => {
-    startGame(roomName, user.displayName);
+    startGame(roomName, user.displayName).then(() => {
+      getPlayerCards().then((res: any) => {
+        console.log(res);
+        setPlayerCards(res?.result?.piles?.[user?.displayName.replace(' ', '')].cards);
+      });
+
+      getTableCards().then((res: any) => {
+        setTableCards(res?.result?.piles?.['tablePile'] || []);
+      });
+    });
     setState((prevState) => ({ ...prevState, hasStarted: true }));
+  };
+
+  const transferCard = (deckID, pileID, cardToDraw) => {
+    drawFromPile(deckID, pileID, [cardToDraw]).then(() => {
+      addToPiles(deckID, 'tablePile', [cardToDraw]).then(()=>{
+        setPlayerCards(())
+        setTableCards()
+      })
+    });
   };
 
   const handleJoinedMeeting = () => {
@@ -112,7 +157,7 @@ const Room = ({ user }: UserType) => {
           <>
             <div ref={callWrapperRef} className='w-1/4' />
             {state.hasStarted ? (
-              <Thulla />
+              <Thulla playerCards={playerCards} tableCards={tableCards} transferCard={transferCard} />
             ) : (
               <div className='flex items-center justify-center w-3/4'>
                 {state.canStart ? (

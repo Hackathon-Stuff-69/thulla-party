@@ -45,7 +45,7 @@ const Home = ({ state, setState }: { state: MainState; setState: (room: RoomItem
     <>
       <Header user={state.user} />
       <div
-        className={`flex flex-col justify-center space-y-6 w-screen ${state.user ? 'h-full' : 'h-screen'}`}
+        className='flex flex-col justify-center space-y-6 w-screen h-screen'
         style={{
           background: `url('static/cover.png')`,
           backgroundRepeat: 'no-repeat',
