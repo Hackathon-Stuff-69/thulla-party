@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-
-import {
-  getAuth,
-  signInWithPopup,
-  GoogleAuthProvider,
-  setPersistence,
-  browserSessionPersistence,
-  Auth,
-  signOut,
-} from 'firebase/auth';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import axios from 'axios';
 
 import Home from './components/Home';
 import Room from './components/Room';
-import { DAILY_API_HEADERS, MainState, RoomItem, app } from './constants';
+import { auth, DAILY_API_HEADERS, MainState, RoomItem } from './constants';
 
 // import { getAuth } from 'firebase/auth';
 // import { getFirestore } from 'firebase/firestore';
@@ -34,20 +24,7 @@ import { DAILY_API_HEADERS, MainState, RoomItem, app } from './constants';
 // const analytics = getAnalytics(app);
 
 const App: React.FC = () => {
-  const provider = new GoogleAuthProvider();
-  const auth = getAuth();
   const [state, setState] = useState<MainState>({ user: null, rooms: [] });
-
-  const googleSignIn = (auth: Auth, provider: GoogleAuthProvider) =>
-    setPersistence(auth, browserSessionPersistence)
-      .then(() => {
-        return signInWithPopup(auth, provider).then((result) =>
-          setState((prevState) => ({ ...prevState, user: result.user })),
-        );
-      })
-      .catch((error) => {
-        console.error(error);
-      });
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -67,38 +44,6 @@ const App: React.FC = () => {
 
   return (
     <Router>
-      <nav
-        className='flex items-center justify-between flex-wrap p-6'
-        style={{
-          backgroundColor: '#171512',
-        }}
-      >
-        <div className='flex items-center flex-shrink-0 text-white mr-6'>
-          <Link to='/'>
-            <span className='font-semibold text-xl tracking-tight'>Thulla Party</span>
-          </Link>
-        </div>
-        {state.user ? (
-          <span className='flex items-center text-white space-x-4'>
-            <img alt='Placeholder' className='block rounded-full w-8 h-8' src={state.user.photoURL} />
-            <p className='m-0 font-bold'>{state.user.displayName}</p>
-            <button
-              className='m-0 bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded'
-              onClick={() => signOut(auth)}
-            >
-              Logout
-            </button>
-          </span>
-        ) : (
-          <button
-            className='bg-transparent hover:bg-white text-white font-semibold hover:text-black py-2 px-4 border border-white hover:border-transparent rounded'
-            onClick={() => googleSignIn(auth, provider)}
-          >
-            Login with Google
-          </button>
-        )}
-      </nav>
-
       <Switch>
         <Route exact path='/room/:roomName'>
           <Room user={state.user} />

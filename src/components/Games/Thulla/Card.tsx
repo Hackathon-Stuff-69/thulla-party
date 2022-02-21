@@ -1,13 +1,15 @@
 import { useState } from 'react';
 
-const Card = ({ img, onClick, code, squeeze, styles }) => {
+const Card = ({ img, onClick, code, squeeze, styles, tableCard }) => {
   return (
     <button
       onClick={() => {
         onClick();
       }}
       style={styles}
-      className={`transition duration-200 hover:-translate-y-5 ${squeeze ? '-mr-32' : ''}`}
+      className={`${!tableCard ? 'transition duration-200 hover:-translate-y-5' : 'pointer-events-none'} ${
+        squeeze ? '-mr-32' : ''
+      }`}
     >
       <img className='h-full' src={img} alt={code} />
     </button>
