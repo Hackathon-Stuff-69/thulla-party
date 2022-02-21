@@ -65,7 +65,6 @@ const addData = async (roomName: string, status: string) => {
       { merge: true },
     );
     return docRef;
-    console.log('Update Successful!!!');
   } catch (e) {
     console.error('Error adding document: ', e);
   }
