@@ -1,5 +1,5 @@
 import * as basicFuncs from './basicFuncs';
-import { DeckData, DrawnCards, GameStatus, RoomItem } from '../constants';
+import { DeckData, GameStatus, RoomItem } from '../constants';
 import { addRoom, addData, getRoomById } from '../Services/coreService';
 import { User } from 'firebase/auth';
 
