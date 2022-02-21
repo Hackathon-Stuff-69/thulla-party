@@ -66,7 +66,6 @@ const Room = ({ user }: UserType) => {
       } else if (doc.data().players.length < 3 && state.canStart) {
         setState((prevState) => ({ ...prevState, canStart: false }));
       }
-
       if (doc.data().status === 'started') setState((prevState) => ({ ...prevState, hasStarted: true }));
     });
 

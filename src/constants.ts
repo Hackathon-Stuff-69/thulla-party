@@ -12,6 +12,13 @@ export const firebaseConfig = {
   measurementId: 'G-KJZF459F9Y',
 };
 
+export enum GameStatus {
+  started = 'STARTED',
+  paused = 'PAUSED',
+  finished = 'FINISHED',
+  waiting = 'WAITING',
+}
+
 const DAILY_API_KEY = process.env.REACT_APP_DAILY_API_KEY;
 export const DAILY_API_HEADERS = { headers: { Authorization: `Bearer ${DAILY_API_KEY}` } };
 
@@ -23,6 +30,13 @@ export const auth = getAuth();
 export interface Players {
   name: string;
   playerId: number;
+}
+
+export interface DrawnCards {
+  success: boolean;
+  cards: [];
+  deck_id: string;
+  remaining: number;
 }
 
 export type DeckData = {
